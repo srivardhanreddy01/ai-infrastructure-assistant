@@ -1,5 +1,9 @@
 # ai-infrastructure-assistant
 
+AI Infrastructure Assistant is a portfolio project that explores how modern AI systems are built by incrementally evolving a simple LLM application into a production-ready AI assistant.
+
+The project focuses on AI Engineering concepts including prompt architecture, structured outputs, retrieval-augmented generation (RAG), tool calling, Model Context Protocol (MCP), agent workflows, evaluation, and deployment.
+
 ## Goals
 
 - Learn AI Engineering through building
@@ -12,8 +16,8 @@
 
 ### v0.1
 - [x] Project structure
-- [ ] OpenAI integration
-- [ ] Prompt architecture
+- [x] OpenAI integration
+- [x] Prompt architecture
 - [ ] Structured outputs
 - [ ] Tool calling
 
@@ -44,6 +48,15 @@ infra-assistant/
 ├── logs/
 └── README.md
 ```
+
+## Current Features
+
+- OpenAI Responses API integration
+- Environment-based API-key configuration
+- Separation of application, prompt, and provider logic
+- Typed `LLMRequest` contract
+- Infrastructure log input from a local file
+- Basic LLM-powered log analysis
 
 ## Tech Stack
 

@@ -17,18 +17,33 @@ This repository also serves as a portfolio project demonstrating modern AI appli
                 +------------------+
                           |
                           v
-                +------------------+
+                +-------------------+
                 | Python Application|
-                +------------------+
+                +-------------------+
                           |
                           v
                 +------------------+
-                | Prompt Builder   |
+                | Read Log File    |
                 +------------------+
                           |
                           v
+                +--------------------------+
+                | Prompt/request Builder   |
+                +--------------------------+
+                          |
+                          v
                 +------------------+
-                | OpenAI API       |
+                | LLM Request      |
+                +------------------+
+                          |
+                          v
+                +------------------------+
+                | LLM Provider Layer     |
+                +------------------------+
+                          |
+                          v
+                +------------------+
+                |      Open API    |
                 +------------------+
                           |
                           v
@@ -40,6 +55,19 @@ This repository also serves as a portfolio project demonstrating modern AI appli
                 +------------------+
                 | Console Output   |
                 +------------------+
+
+## Design Decisions
+
+### Separate prompt construction from provider communication
+
+The prompt builder defines what the model should do and combines it with dynamic log content.
+
+The LLM layer is responsible only for communicating with the model provider. This keeps application behavior separate from OpenAI-specific implementation details.
+
+### Use a typed request object
+
+`LLMRequest` acts as a shared contract between the prompt-building layer and the LLM provider layer. Pydantic validates that required instructions and input are present before making an API request.
+
 
 ## Current Scope (Week 1)
 
@@ -59,3 +87,4 @@ Out of Scope
 - Memory
 - Evaluation
 - Deployment
+
