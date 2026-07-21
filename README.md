@@ -18,6 +18,8 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Project structure
 - [x] OpenAI integration
 - [x] Prompt architecture
+- [x] Typed LLM request model
+- [ ] File-based log input
 - [ ] Structured outputs
 - [ ] Tool calling
 
@@ -38,14 +40,17 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 
 
 ## Project Structure
-
 ```text
-infra-assistant/
+ai-infrastructure-assistant/
+├── docs/
+│   └── architecture.md
 ├── app.py
-├── llm.py
-├── prompts.py
 ├── config.py
-├── logs/
+├── llm.py
+├── models.py
+├── prompts.py
+├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
