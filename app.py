@@ -1,18 +1,27 @@
 from llm import ask_llm
 from prompts import build_log_analysis_prompt
 
-def main() -> None:
-    file_content=""
-    try:
-        with open("logs/mongodb_connection.log", "r") as file:
-            file_content = file.read()
-    except:
-        print("An error occurred! Unable to open the file")
-    
-    request = build_log_analysis_prompt(file_content)
 
+def main() -> None:
+    try:
+        with open(
+            "logs/mongodb_connection.log",
+            "r",
+            encoding="utf-8",
+        ) as file:
+            file_content = file.read()
+    except OSError as exc:
+        print(f"Unable to open the log file: {exc}")
+        return
+
+    request = build_log_analysis_prompt(file_content)
     response = ask_llm(request)
-    print(response)
+
+    print(f"Root cause: {response.root_cause}")
+    print(f"Severity: {response.severity.value}")
+    print(f"Confidence: {response.confidence:.0%}")
+    print(f"Recommendation: {response.recommendation}")
+    print(f"Summary: {response.summary}")
 
 
 if __name__ == "__main__":

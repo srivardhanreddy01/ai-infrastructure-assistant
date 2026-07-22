@@ -47,9 +47,9 @@ This repository also serves as a portfolio project demonstrating modern AI appli
                 +------------------+
                           |
                           v
-                +------------------+
-                | LLM Response     |
-                +------------------+
+                +---------------------+
+                | Structured Response |
+                +---------------------+
                           |
                           v
                 +------------------+

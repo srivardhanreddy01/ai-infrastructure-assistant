@@ -19,8 +19,8 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] OpenAI integration
 - [x] Prompt architecture
 - [x] Typed LLM request model
-- [ ] File-based log input
-- [ ] Structured outputs
+- [x] File-based log input
+- [x] Structured outputs
 - [ ] Tool calling
 
 ### v0.2
