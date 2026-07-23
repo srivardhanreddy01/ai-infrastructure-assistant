@@ -1,5 +1,5 @@
 from llm import ask_llm
-from prompts import build_log_analysis_prompt
+from context_builder import build_log_analysis_prompt
 
 
 def main() -> None:
