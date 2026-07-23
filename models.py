@@ -18,5 +18,7 @@ class LogAnalysis(BaseModel):
     root_cause: str = Field(min_length=1)
     severity: Severity
     confidence: float = Field(ge=0.0, le=1.0)
+    error_count: int = Field(ge=0)
     recommendation: str = Field(min_length=1)
     summary: str = Field(min_length=1)
+    

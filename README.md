@@ -21,7 +21,10 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Typed LLM request model
 - [x] File-based log input
 - [x] Structured outputs
-- [ ] Tool calling
+- [x] Tool calling
+- [ ] Error handling
+- [ ] Tests
+- [ ] Documentation and v0.1 release
 
 ### v0.2
 - [ ] Embeddings
@@ -44,11 +47,14 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 ai-infrastructure-assistant/
 ├── docs/
 │   └── architecture.md
+├── logs/
+│   └── mongodb_connection.log
 ├── app.py
 ├── config.py
+├── context_builder.py
 ├── llm.py
 ├── models.py
-├── prompts.py
+├── tools.py
 ├── requirements.txt
 ├── .gitignore
 └── README.md

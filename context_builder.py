@@ -17,7 +17,7 @@ Return a structured analysis containing:
 - summary
 """
 
-def build_log_analysis_prompt(log_text: str) -> LLMRequest:
+def build_log_analysis_request(log_text: str) -> LLMRequest:
     return LLMRequest(
         instructions=SYSTEM_PROMPT,
         input=log_text,

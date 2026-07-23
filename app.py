@@ -1,5 +1,5 @@
 from llm import ask_llm
-from context_builder import build_log_analysis_prompt
+from context_builder import build_log_analysis_request
 
 
 def main() -> None:
@@ -14,7 +14,7 @@ def main() -> None:
         print(f"Unable to open the log file: {exc}")
         return
 
-    request = build_log_analysis_prompt(file_content)
+    request = build_log_analysis_request(file_content)
     response = ask_llm(request)
 
     print(f"Root cause: {response.root_cause}")
