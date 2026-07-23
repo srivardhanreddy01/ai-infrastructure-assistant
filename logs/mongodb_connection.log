@@ -1,9 +1,5 @@
-2026-08-01T12:43:02Z ERROR Failed to connect to MongoDB
-
-connection refused
-
-retry attempt 3
-
-Application shutting down
-
-Container exited with code 1
+2026-07-23T14:15:01Z INFO Starting orders-api
+2026-07-23T14:15:03Z ERROR Failed to connect to MongoDB at mongodb:27017
+2026-07-23T14:15:03Z WARNING Retrying database connection
+2026-07-23T14:15:08Z ERROR Failed to connect to MongoDB at mongodb:27017
+2026-07-23T14:15:08Z ERROR Application shutting down
