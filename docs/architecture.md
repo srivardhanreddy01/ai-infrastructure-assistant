@@ -28,8 +28,20 @@ This repository also serves as a portfolio project demonstrating modern AI appli
                           |
                           v
                 +--------------------------+
-                | Prompt/request Builder   |
+                |     Context Builder      | ----> Context Builder
                 +--------------------------+
+                          |                             ├── Instructions
+                          |
+                          |                             ├── User Question
+                          |
+                          |                             ├── Logs
+                          |
+                          |                             ├── Retrieved Docs
+                          |
+                          |                             ├── Tool Results
+                          |
+                          |                             ├── Conversation Memory
+                          |
                           |
                           v
                 +------------------+
