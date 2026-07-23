@@ -1,0 +1,9 @@
+2026-08-01T12:43:02Z ERROR Failed to connect to MongoDB
+
+connection refused
+
+retry attempt 3
+
+Application shutting down
+
+Container exited with code 1
