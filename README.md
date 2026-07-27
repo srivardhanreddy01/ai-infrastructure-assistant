@@ -22,9 +22,9 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] File-based log input
 - [x] Structured outputs
 - [x] Tool calling
-- [ ] Error handling
-- [ ] Tests
-- [ ] Documentation and v0.1 release
+- [x] Basic Error handling
+- [x] Tests
+- [x] Documentation and v0.1 release
 
 ### v0.2
 - [ ] Embeddings
@@ -81,3 +81,27 @@ Future:
 - Qdrant
 - MCP
 - Docker
+
+## Setup
+
+```bash
+git clone https://github.com/srivardhanreddy01/ai-infrastructure-assistant.git
+cd ai-infrastructure-assistant
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+Create a `.env` file:
+
+```text
+OPENAI_API_KEY=your_api_key
+```
+
+Run:
+
+```bash
+python app.py
+```

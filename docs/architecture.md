@@ -80,6 +80,37 @@ The LLM layer is responsible only for communicating with the model provider. Thi
 
 `LLMRequest` acts as a shared contract between the prompt-building layer and the LLM provider layer. Pydantic validates that required instructions and input are present before making an API request.
 
+## v0.1 architecture
+
+Log File
+   ↓
+Application
+   ↓
+Context Builder
+   ↓
+LLMRequest
+   ↓
+OpenAI Responses API
+   ↓
+Tool Request
+   ↓
+Application Executes count_errors()
+   ↓
+Tool Result
+   ↓
+OpenAI Responses API
+   ↓
+Validated LogAnalysis
+   ↓
+Console Output
+
+## v0.1 Design Decisions
+
+- Separate context construction from provider communication.
+- Use Pydantic models as typed application contracts.
+- Use application tools for deterministic work.
+- Use the LLM for interpretation and reasoning.
+- Keep OpenAI-specific code isolated from the application workflow.
 
 ## Current Scope (Week 1)
 
