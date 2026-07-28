@@ -1,42 +1,107 @@
-CrashLoopBackOff
+# Kubernetes Troubleshooting Guide
 
-Description: The pod starts, crashes, and Kubernetes tries to restart it over and over with a delay.
+This document contains common Kubernetes issues and troubleshooting steps.
 
-Cause: Application bugs, missing environment variables, wrong entrypoint commands, or crashing code.
+---
 
-Resolution: Run kubectl logs <pod-name> to read app logs. Fix the config or code issue, then update the deployment.
+## Issue: CrashLoopBackOff
 
-References: ⁠Lens Debugging Guide https://lenshq.io/blog/fix-common-kubernetes-errors
+### Description
 
+A container repeatedly starts and crashes.
 
-ImagePullBackOff
+### Common Causes
 
-Description: Kubernetes cannot download the container image from the registry.
+- Application crash
+- Missing configuration
+- Invalid environment variables
+- Dependency unavailable
 
-Cause: Typo in the image name or tag, or missing private registry credentials.
+### Symptoms
 
-Resolution: Run kubectl describe pod <pod-name> to check the exact pull error. Fix the tag name or add proper imagePullSecrets.
+- `CrashLoopBackOff`
+- `Back-off restarting failed container`
 
-References: ⁠PerfectScale Troubleshooting Guide https://www.perfectscale.io/blog/kubernetes-troubleshooting-commands-errors-and-fixes
+### Recommended Actions
 
+1. Inspect pod logs.
+2. Describe the pod.
+3. Verify environment variables.
+4. Confirm dependencies are available.
 
-OOMKilled
+### Keywords
 
-Description: The container stops suddenly because it used too much memory.
+kubernetes, crashloopbackoff, pod restart, container restart
 
-Cause: The app exceeded the memory limit set in the pod specification.
+### References
 
-Resolution: Check usage with kubectl top pod. Increase the memory limit in your deployment YAML or fix memory leaks.
+- https://kubernetes.io/docs/
 
-References: ⁠SFEIR Institute Training https://institute.sfeir.com/en/kubernetes-training/resolve-errors-deployment-kubernetes-common/
+---
 
+## Issue: ImagePullBackOff
 
-CreateContainerConfigError
+### Description
 
-Description: Kubernetes cannot create the container because a config item is missing.
+Kubernetes cannot pull the requested container image.
 
-Cause: The manifest points to a ConfigMap or Secret that does not exist.
+### Common Causes
 
-Resolution: Run kubectl describe pod <pod-name> to find the missing resource name. Create the missing ConfigMap or Secret.
+- Invalid image name
+- Missing image tag
+- Registry authentication failure
+- Image does not exist
 
-References: ⁠The New Stack Deployment Errors https://thenewstack.io/top-10-kubernetes-deployment-errors-causes-and-fixes-and-tips/
+### Symptoms
+
+- `ImagePullBackOff`
+- `ErrImagePull`
+
+### Recommended Actions
+
+1. Verify image name.
+2. Check registry credentials.
+3. Confirm the image exists.
+4. Verify image tag.
+
+### Keywords
+
+kubernetes, imagepullbackoff, errimagepull, docker image
+
+### References
+
+- https://kubernetes.io/docs/
+
+---
+
+## Issue: Pending Pod
+
+### Description
+
+A pod remains in the Pending state and is never scheduled.
+
+### Common Causes
+
+- Insufficient resources
+- Node selector mismatch
+- Taints and tolerations
+- Persistent volume unavailable
+
+### Symptoms
+
+- `Pending`
+
+### Recommended Actions
+
+1. Describe the pod.
+2. Check scheduler events.
+3. Verify node capacity.
+4. Validate storage availability.
+
+### Keywords
+
+kubernetes, pending pod, scheduler, node resources
+
+### References
+
+- https://kubernetes.io/docs/

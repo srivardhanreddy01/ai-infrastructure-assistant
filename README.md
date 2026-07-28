@@ -47,6 +47,11 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 ai-infrastructure-assistant/
 ├── docs/
 │   └── architecture.md
+│   └── CHANGELOG.md
+├── knowledge/
+│   └── docker.md
+│   └── kubernetes.md
+│   └── mongodb.md
 ├── logs/
 │   └── mongodb_connection.log
 ├── app.py

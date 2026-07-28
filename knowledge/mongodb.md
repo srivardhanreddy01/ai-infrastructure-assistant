@@ -1,43 +1,108 @@
-1) Duplicate Key Error (Code 11000)
+# MongoDB Troubleshooting Guide
 
-Description: An insert or update operation fails because a field with a unique index already contains that exact value.
+This document contains common MongoDB issues, their causes, and recommended troubleshooting steps.
 
-Cause: Trying to write a duplicate value to a field defined with a unique constraint (like an existing _id or unique email index).
+---
 
-Resolution: Check existing data before insertion, use upsert: true if updating, or catch the exception in your app code to handle conflicts gracefully.
+## Issue: MongoDB Connection Refused
 
-Reference: Read more on MongoDB OperationFailure Errors. (https://oneuptime.com/blog/post/2025-12-15-mongodb-operationfailure-errors/view)
- 
+### Description
+The application cannot establish a connection to the MongoDB server.
 
-2) Connection Refused (ECONNREFUSED / Code 61 or similar socket states)
+### Common Causes
 
-Description: The client driver cannot establish a TCP connection to the MongoDB server instance.
+- MongoDB service is not running
+- Incorrect hostname or port
+- Firewall blocking the connection
+- Incorrect connection string
+- Docker networking issues
 
-Cause: The mongod service is not running, the port (default 27017) is blocked by a firewall, or the application uses localhost instead of 127.0.0.1 in IPv6 environments.
+### Symptoms
 
-Resolution: Start the MongoDB server, verify network binding in /etc/mongod.conf, and update connection strings to use explicit IP addresses like 127.0.0.1.
+- `connection refused`
+- `ECONNREFUSED`
+- `failed to connect to MongoDB`
 
-Reference: Review connection fixes in the https://www.mongodb.com/community/forums/t/getting-error-while-connecting-to-mongodb-using-node-js/216431
+### Recommended Actions
 
+1. Verify MongoDB is running.
+2. Confirm the connection string.
+3. Verify port **27017** is open.
+4. Check firewall and network configuration.
+5. Validate Docker networking if applicable.
 
-3) DNS Resolution Timeout / querySrv EREFUSED
+### Keywords
 
-Description: The system fails to resolve MongoDB Atlas SRV DNS records when using mongodb+srv:// connection schemes.
+mongodb, connection refused, ECONNREFUSED, port 27017, failed to connect
 
-Cause: Local ISP or corporate DNS restrictions blocking SRV record queries, or general network timeout.
- 
-Resolution: Switch your local network DNS provider to a public resolver like Google (8.8.8.8) or Cloudflare (1.1.1.1), or fall back to a standard non-SRV connection string.
- 
-Reference: Check user discussions on https://github.com/vercel/next.js/discussions/93912
+### References
 
-4) Authentication Failed (Code 18)
+- https://www.mongodb.com/docs/
 
-Description: The database server rejects client credentials during the handshake.
- 
-Cause: Incorrect username/password, or trying to authenticate against the wrong authentication source (authSource) database.
- 
-Resolution: Verify credentials and append the correct target database parameter (e.g., ?authSource=admin) to your connection string.
- 
-Reference: Consult the official https://www.mongodb.com/docs/manual/reference/error-codes/
+---
 
+## Issue: MongoDB Error E11000 (Duplicate Key)
 
+### Description
+
+An insert or update violates a unique index.
+
+### Common Causes
+
+- Duplicate `_id`
+- Duplicate value in a unique index
+- Incorrect upsert logic
+
+### Symptoms
+
+- `E11000 duplicate key`
+- `duplicate key error`
+
+### Recommended Actions
+
+1. Check the unique index.
+2. Verify incoming data.
+3. Remove duplicates if appropriate.
+4. Review upsert logic.
+
+### Keywords
+
+mongodb, e11000, duplicate key, unique index
+
+### References
+
+- https://www.mongodb.com/docs/
+
+---
+
+## Issue: MongoDB Authentication Failed
+
+### Description
+
+The client cannot authenticate with the database.
+
+### Common Causes
+
+- Invalid username
+- Invalid password
+- Incorrect authentication database
+- Missing user permissions
+
+### Symptoms
+
+- `Authentication failed`
+- `Unauthorized`
+
+### Recommended Actions
+
+1. Verify credentials.
+2. Check authentication database.
+3. Confirm user permissions.
+
+### Keywords
+
+mongodb, authentication failed, unauthorized, login
+
+### References
+
+- https://www.mongodb.com/docs/
