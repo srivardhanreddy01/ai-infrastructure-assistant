@@ -27,9 +27,13 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Documentation and v0.1 release
 
 ### v0.2
+- [x] Local troubleshooting knowledge base
+- [x] Keyword-based retrieval
+- [x] Retrieved context injection
 - [ ] Embeddings
-- [ ] Vector search
-- [x] RAG
+- [ ] Semantic search
+- [ ] Vector database
+- [ ] Retrieval evaluation
 
 ### v0.3
 - [ ] Agent workflows
