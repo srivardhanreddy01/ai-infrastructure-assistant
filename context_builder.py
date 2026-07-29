@@ -1,3 +1,5 @@
+from textwrap import dedent
+
 from models import LLMRequest
 
 
@@ -17,8 +19,27 @@ Return a structured analysis containing:
 - summary
 """
 
-def build_log_analysis_request(log_text: str) -> LLMRequest:
+
+def build_log_analysis_request(
+    log_text: str,
+    retrieved_docs: list[str],
+) -> LLMRequest:
+    knowledge = "\n\n---\n\n".join(retrieved_docs)
+
+    user_input = dedent(
+        f"""
+        Use the retrieved documentation when it is relevant.
+        Do not assume the documentation is always correct for the current incident.
+
+        RETRIEVED KNOWLEDGE:
+        {knowledge or "No relevant documentation was found."}
+
+        LOGS:
+        {log_text}
+        """
+    ).strip()
+
     return LLMRequest(
-        instructions=SYSTEM_PROMPT,
-        input=log_text,
+        instructions=SYSTEM_PROMPT.strip(),
+        input=user_input,
     )

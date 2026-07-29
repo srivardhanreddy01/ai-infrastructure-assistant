@@ -23,3 +23,17 @@
 - Basic error handling
 - Initial architecture documentation
 - Unit tests for deterministic tools
+
+## Unreleased
+
+### Added 
+
+- retiever.py which return relevant docs based on input data
+- retiever does a keyword check and returns the docs
+- Context builder now uses the retrieved docs data and appends it to user input
+- Added test to check the functionality of the retriever
+
+### Changed
+
+- Updated context builder to also support retrieved docs
+- app.py now calls retiver and passes it to context builder

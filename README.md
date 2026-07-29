@@ -29,7 +29,7 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 ### v0.2
 - [ ] Embeddings
 - [ ] Vector search
-- [ ] RAG
+- [x] RAG
 
 ### v0.3
 - [ ] Agent workflows
@@ -61,6 +61,8 @@ ai-infrastructure-assistant/
 ├── models.py
 ├── tools.py
 ├── requirements.txt
+├── retriever.py
+├── test_retriever.py
 ├── .gitignore
 └── README.md
 ```
