@@ -30,7 +30,7 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Local troubleshooting knowledge base
 - [x] Keyword-based retrieval
 - [x] Retrieved context injection
-- [ ] Embeddings
+- [x] Embeddings
 - [ ] Semantic search
 - [ ] Vector database
 - [ ] Retrieval evaluation
@@ -67,6 +67,8 @@ ai-infrastructure-assistant/
 ├── test_tools.py
 ├── requirements.txt
 ├── retriever.py
+├── openai_client.py
+├── embedding_service.py
 ├── test_retriever.py
 ├── .gitignore
 └── README.md

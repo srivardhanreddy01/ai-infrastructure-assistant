@@ -1,12 +1,9 @@
 from openai import OpenAI
 import json
 
-from config import OPENAI_API_KEY
 from models import LLMRequest, LogAnalysis
 from tools import count_errors, COUNT_ERRORS_TOOL
-
-
-client = OpenAI(api_key=OPENAI_API_KEY)
+from openai_client import client
 
 def execute_tool(name: str, arguments: dict) -> str:
     """Route an approved tool call to its Python implementation."""
