@@ -1,5 +1,6 @@
-from openai import OpenAI
 import json
+
+from openai import OpenAIError
 
 from models import LLMRequest, LogAnalysis
 from tools import count_errors, COUNT_ERRORS_TOOL
@@ -7,10 +8,8 @@ from openai_client import client
 
 def execute_tool(name: str, arguments: dict) -> str:
     """Route an approved tool call to its Python implementation."""
-
-    if name=="count_errors":
+    if nam == "count_errors":
         return str(count_errors(**arguments))
-    
     raise ValueError(f"Unknown tool requested: {name}")
 
 def ask_llm(request: LLMRequest) -> LogAnalysis:
