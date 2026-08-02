@@ -71,6 +71,7 @@ ai-infrastructure-assistant/
 ├── embedding_service.py
 ├── embedding_index.py
 ├── test_retriever.py
+├── embeddings.json
 ├── .gitignore
 └── README.md
 ```
