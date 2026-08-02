@@ -1,22 +1,27 @@
 import math
 from pathlib import Path
 
-from embedding_index import build_embedding_index
+from embedding_index import load_embedding_index
 from embedding_service import generate_embedding
 
 
 KNOWLEDGE_DIRECTORY = Path("knowledge")
+MINIMUM_SIMILARITY = 0.45
 
 
 def retrieve(query: str) -> list[str]:
-    """Retrieve the most semantically similar knowledge document."""
-
     scores = calculate_similarity_scores(query)
 
     if not scores:
         return []
 
-    best_document = max(scores, key=scores.get)
+    best_document, best_score = max(
+        scores.items(),
+        key=lambda item: item[1],
+    )
+
+    if best_score < MINIMUM_SIMILARITY:
+        return []
 
     return [
         extract_file(KNOWLEDGE_DIRECTORY / best_document)
@@ -26,7 +31,7 @@ def retrieve(query: str) -> list[str]:
 def calculate_similarity_scores(query: str) -> dict[str, float]:
     """Calculate similarity between a query and indexed documents."""
 
-    indices = build_embedding_index()
+    indices = load_embedding_index()
     query_embedding = generate_embedding(query)
 
     scores: dict[str, float] = {}
