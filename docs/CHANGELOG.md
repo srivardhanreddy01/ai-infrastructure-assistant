@@ -37,3 +37,30 @@
 
 - Updated context builder to also support retrieved docs
 - app.py now calls retiver and passes it to context builder
+
+## v0.2.0
+
+### Added
+
+- Infrastructure troubleshooting knowledge base
+- Keyword-based document retrieval
+- OpenAI embedding generation
+- Shared OpenAI client
+- Semantic document retrieval
+- Cosine-similarity ranking
+- Persisted embedding index
+- Incremental embedding regeneration for modified documents
+- Retrieved knowledge injection into the LLM context
+
+### Changed
+
+- Replaced the original keyword-only retrieval path with semantic retrieval.
+- Separated document indexing from query-time retrieval.
+- Expanded the context builder to include retrieved troubleshooting knowledge.
+
+### Known Limitations
+
+- Documents are embedded as whole files rather than smaller chunks.
+- Retrieval currently selects a single best document.
+- Embeddings are stored in a local JSON file.
+- No vector database or metadata filtering is implemented.

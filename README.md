@@ -26,12 +26,17 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Tests
 - [x] Documentation and v0.1 release
 
-### v0.2
+### v0.2 — Knowledge Augmentation
+
 - [x] Local troubleshooting knowledge base
 - [x] Keyword-based retrieval
-- [x] Retrieved context injection
-- [x] Embeddings
+- [x] Embedding generation
+- [x] Persisted embedding index
+- [x] Incremental embedding updates
+- [x] Cosine-similarity ranking
 - [x] Semantic search
+- [x] Basic retrieval-augmented generation
+- [ ] Document chunking
 - [ ] Vector database
 - [ ] Retrieval evaluation
 
