@@ -8,7 +8,7 @@ from openai_client import client
 
 def execute_tool(name: str, arguments: dict) -> str:
     """Route an approved tool call to its Python implementation."""
-    if nam == "count_errors":
+    if name == "count_errors":
         return str(count_errors(**arguments))
     raise ValueError(f"Unknown tool requested: {name}")
 
