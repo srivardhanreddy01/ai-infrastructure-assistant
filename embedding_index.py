@@ -2,11 +2,13 @@ import json
 from pathlib import Path
 from typing import Any
 
+from chunker import chunk
 from embedding_service import generate_embedding
 
 
 EMBEDDINGS_FILE = Path("embeddings.json")
 KNOWLEDGE_DIRECTORY = Path("knowledge")
+
 DOCUMENTS = [
     "mongodb.md",
     "docker.md",
@@ -15,9 +17,7 @@ DOCUMENTS = [
 
 
 def build_embedding_index() -> None:
-    """
-    Generate embeddings only for new or modified knowledge documents.
-    """
+    """Generate embeddings for new or modified document chunks."""
 
     existing_index = load_raw_embedding_index()
     updated_index: dict[str, dict[str, Any]] = {}
@@ -25,43 +25,45 @@ def build_embedding_index() -> None:
     for document_name in DOCUMENTS:
         file_path = KNOWLEDGE_DIRECTORY / document_name
         modified_at = file_path.stat().st_mtime
-
-        existing_entry = existing_index.get(document_name)
-
-        if (
-            existing_entry is not None
-            and existing_entry.get("modified_at") == modified_at
-        ):
-            updated_index[document_name] = existing_entry
-            continue
-
         content = extract_file(file_path)
+        chunks = chunk(content)
 
-        updated_index[document_name] = {
-            "modified_at": modified_at,
-            "embedding": generate_embedding(content),
-        }
+        for chunk_index, chunk_text in enumerate(chunks):
+            chunk_key = f"{document_name}#chunk_{chunk_index}"
+            existing_entry = existing_index.get(chunk_key)
+
+            if (
+                existing_entry is not None
+                and existing_entry.get("modified_at") == modified_at
+                and existing_entry.get("text") == chunk_text
+            ):
+                updated_index[chunk_key] = existing_entry
+                continue
+
+            updated_index[chunk_key] = {
+                "source": document_name,
+                "chunk_index": chunk_index,
+                "modified_at": modified_at,
+                "text": chunk_text,
+                "embedding": generate_embedding(chunk_text),
+            }
 
     store_embedding_index(updated_index)
 
 
 def load_embedding_index() -> dict[str, list[float]]:
-    """
-    Load only document names and embedding vectors for retrieval.
-    """
+    """Load chunk identifiers and embedding vectors for retrieval."""
 
     raw_index = load_raw_embedding_index()
 
     return {
-        document_name: entry["embedding"]
-        for document_name, entry in raw_index.items()
+        chunk_key: entry["embedding"]
+        for chunk_key, entry in raw_index.items()
     }
 
 
 def load_raw_embedding_index() -> dict[str, dict[str, Any]]:
-    """
-    Load persisted embeddings and metadata.
-    """
+    """Load persisted chunk embeddings and metadata."""
 
     if not EMBEDDINGS_FILE.exists():
         return {}
@@ -80,6 +82,7 @@ def store_embedding_index(
 def extract_file(path: Path) -> str:
     with path.open("r", encoding="utf-8") as file:
         return file.read()
+
 
 if __name__ == "__main__":
     build_embedding_index()
