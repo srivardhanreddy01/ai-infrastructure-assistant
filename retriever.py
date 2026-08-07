@@ -1,45 +1,59 @@
 import math
-from pathlib import Path
 
-from embedding_index import load_embedding_index
+from embedding_index import load_raw_embedding_index
 from embedding_service import generate_embedding
 
 
-KNOWLEDGE_DIRECTORY = Path("knowledge")
+TOP_K = 3
 MINIMUM_SIMILARITY = 0.45
 
 
 def retrieve(query: str) -> list[str]:
+    """Return the top relevant knowledge chunks for the query."""
+
     scores = calculate_similarity_scores(query)
 
     if not scores:
         return []
 
-    best_document, best_score = max(
+    sorted_scores = sorted(
         scores.items(),
-        key=lambda item: item[1],
+        key=lambda item: item[1][0],
+        reverse=True,
     )
 
-    if best_score < MINIMUM_SIMILARITY:
-        return []
+    top_chunks: list[str] = []
 
-    return [
-        extract_file(KNOWLEDGE_DIRECTORY / best_document)
-    ]
+    for _, (similarity_score, chunk_text) in sorted_scores:
+        if similarity_score < MINIMUM_SIMILARITY:
+            continue
+        top_chunks.append(chunk_text)
+
+        if len(top_chunks) == TOP_K:
+            break
+
+    return top_chunks
 
 
-def calculate_similarity_scores(query: str) -> dict[str, float]:
-    """Calculate similarity between a query and indexed documents."""
+def calculate_similarity_scores(
+    query: str,
+) -> dict[str, tuple[float, str]]:
+    """Calculate query similarity against indexed chunks."""
 
-    indices = load_embedding_index()
+    index = load_raw_embedding_index()
     query_embedding = generate_embedding(query)
 
-    scores: dict[str, float] = {}
+    scores: dict[str, tuple[float, str]] = {}
 
-    for document, document_embedding in indices.items():
-        scores[document] = cosine_similarity(
+    for chunk_key, entry in index.items():
+        score = cosine_similarity(
             query_embedding,
-            document_embedding,
+            entry["embedding"],
+        )
+
+        scores[chunk_key] = (
+            score,
+            entry["text"],
         )
 
     return scores
@@ -61,6 +75,7 @@ def cosine_similarity(
     magnitude_a = math.sqrt(
         sum(x**2 for x in vector_a)
     )
+
     magnitude_b = math.sqrt(
         sum(y**2 for y in vector_b)
     )
@@ -69,8 +84,3 @@ def cosine_similarity(
         raise ValueError("Cannot compare zero-length vectors.")
 
     return dot_product / (magnitude_a * magnitude_b)
-
-
-def extract_file(path: Path) -> str:
-    with path.open("r", encoding="utf-8") as file:
-        return file.read()

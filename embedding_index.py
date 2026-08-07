@@ -51,13 +51,13 @@ def build_embedding_index() -> None:
     store_embedding_index(updated_index)
 
 
-def load_embedding_index() -> dict[str, list[float]]:
+def load_embedding_index() -> dict[str, tuple[list[float],str] ]:
     """Load chunk identifiers and embedding vectors for retrieval."""
 
     raw_index = load_raw_embedding_index()
 
     return {
-        chunk_key: entry["embedding"]
+        chunk_key: (entry["embedding"], entry["text"])
         for chunk_key, entry in raw_index.items()
     }
 
