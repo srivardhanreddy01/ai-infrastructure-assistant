@@ -22,3 +22,15 @@ class LogAnalysis(BaseModel):
     recommendation: str = Field(min_length=1)
     summary: str = Field(min_length=1)
     
+class RetrievedChunk(BaseModel):
+    source: str
+    chunk_id: str
+    text: str
+    similarity_score: float
+
+class IndexedChunk(BaseModel):
+    source: str
+    chunk_id: str
+    modified_at: float
+    text: str
+    embedding: list[float]

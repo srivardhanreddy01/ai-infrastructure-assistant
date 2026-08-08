@@ -24,7 +24,15 @@ def build_log_analysis_request(
     log_text: str,
     retrieved_docs: list[str],
 ) -> LLMRequest:
-    knowledge = "\n\n---\n\n".join(retrieved_docs)
+    knowledge = "\n\n---\n\n".join(
+        f"""
+    Source: {chunk.source}
+    Similarity: {chunk.similarity_score:.3f}
+
+    {chunk.text}
+    """.strip()
+        for chunk in retrieved_docs
+    )
 
     user_input = dedent(
         f"""

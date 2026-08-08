@@ -2,13 +2,14 @@ import math
 
 from embedding_index import load_raw_embedding_index
 from embedding_service import generate_embedding
+from models import IndexedChunk, RetrievedChunk
 
 
 TOP_K = 3
 MINIMUM_SIMILARITY = 0.45
 
 
-def retrieve(query: str) -> list[str]:
+def retrieve(query: str) -> list[RetrievedChunk]:
     """Return the top relevant knowledge chunks for the query."""
 
     scores = calculate_similarity_scores(query)
@@ -22,12 +23,20 @@ def retrieve(query: str) -> list[str]:
         reverse=True,
     )
 
-    top_chunks: list[str] = []
+    top_chunks: list[RetrievedChunk] = []
 
-    for _, (similarity_score, chunk_text) in sorted_scores:
+    for chunk_id, (similarity_score, entry) in sorted_scores:
         if similarity_score < MINIMUM_SIMILARITY:
             continue
-        top_chunks.append(chunk_text)
+
+        top_chunks.append(
+            RetrievedChunk(
+                source=entry.source,
+                chunk_id=chunk_id,
+                text=entry.text,
+                similarity_score=similarity_score,
+            )
+        )
 
         if len(top_chunks) == TOP_K:
             break
@@ -37,24 +46,21 @@ def retrieve(query: str) -> list[str]:
 
 def calculate_similarity_scores(
     query: str,
-) -> dict[str, tuple[float, str]]:
+) -> dict[str, tuple[float, IndexedChunk]]:
     """Calculate query similarity against indexed chunks."""
 
     index = load_raw_embedding_index()
     query_embedding = generate_embedding(query)
 
-    scores: dict[str, tuple[float, str]] = {}
+    scores: dict[str, tuple[float, IndexedChunk]] = {}
 
-    for chunk_key, entry in index.items():
+    for chunk_id, entry in index.items():
         score = cosine_similarity(
             query_embedding,
-            entry["embedding"],
+            entry.embedding,
         )
 
-        scores[chunk_key] = (
-            score,
-            entry["text"],
-        )
+        scores[chunk_id] = (score, entry)
 
     return scores
 
