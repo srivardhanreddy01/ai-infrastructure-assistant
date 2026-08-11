@@ -34,3 +34,6 @@ class IndexedChunk(BaseModel):
     modified_at: float
     text: str
     embedding: list[float]
+
+class RetrievalFilter(BaseModel):
+    sources: list[str] | None = None

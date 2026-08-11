@@ -27,3 +27,21 @@ def test_retrieve_no_match() -> None:
     documents = retrieve("CPU usage is unusually high")
 
     assert documents == []
+
+def test_retriever_filtering() -> None:
+    filters = RetrievalFilter(
+        sources=["mongodb.md"]
+    )
+
+    chunks = retrieve(
+        query="MongoDB connection refused",
+        filters=filters,
+    )
+
+    for chunk in chunks:
+        assert chunk.source == "mongodb.md"
+
+def test_retriever_without_filter() -> None:
+    chunks = retrieve("MongoDB connection refused")
+
+    assert len(chunks) > 0

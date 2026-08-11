@@ -2,17 +2,17 @@ import math
 
 from embedding_index import load_raw_embedding_index
 from embedding_service import generate_embedding
-from models import IndexedChunk, RetrievedChunk
+from models import IndexedChunk, RetrievedChunk, RetrievalFilter
 
 
 TOP_K = 3
 MINIMUM_SIMILARITY = 0.45
 
 
-def retrieve(query: str) -> list[RetrievedChunk]:
+def retrieve(query: str, filters: RetrievalFilter | None = None) -> list[RetrievedChunk]:
     """Return the top relevant knowledge chunks for the query."""
 
-    scores = calculate_similarity_scores(query)
+    scores = calculate_similarity_scores(query=query,filters=filters,)
 
     if not scores:
         return []
@@ -45,7 +45,7 @@ def retrieve(query: str) -> list[RetrievedChunk]:
 
 
 def calculate_similarity_scores(
-    query: str,
+    query: str, filters: RetrievalFilter | None = None
 ) -> dict[str, tuple[float, IndexedChunk]]:
     """Calculate query similarity against indexed chunks."""
 
@@ -55,6 +55,13 @@ def calculate_similarity_scores(
     scores: dict[str, tuple[float, IndexedChunk]] = {}
 
     for chunk_id, entry in index.items():
+        if (
+        filters is not None
+        and filters.sources is not None
+        and entry.source not in filters.sources
+        ):
+            continue
+
         score = cosine_similarity(
             query_embedding,
             entry.embedding,
