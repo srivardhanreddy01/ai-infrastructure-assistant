@@ -1,9 +1,8 @@
 import math
 
-from embedding_index import load_raw_embedding_index
 from embedding_service import generate_embedding
 from models import IndexedChunk, RetrievedChunk, RetrievalFilter
-
+from vector_store import load_chunks
 
 TOP_K = 3
 MINIMUM_SIMILARITY = 0.45
@@ -49,7 +48,7 @@ def calculate_similarity_scores(
 ) -> dict[str, tuple[float, IndexedChunk]]:
     """Calculate query similarity against indexed chunks."""
 
-    index = load_raw_embedding_index()
+    index = load_chunks()
     query_embedding = generate_embedding(query)
 
     scores: dict[str, tuple[float, IndexedChunk]] = {}
