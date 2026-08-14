@@ -64,3 +64,32 @@
 - Retrieval currently selects a single best document.
 - Embeddings are stored in a local JSON file.
 - No vector database or metadata filtering is implemented.
+
+## Unreleased
+
+### Added
+
+- Document chunking based on issue sections
+- Chunk-level embedding generation
+- Typed `IndexedChunk` model
+- Typed `RetrievedChunk` model
+- Top-K semantic retrieval
+- Minimum similarity filtering
+- Metadata filtering by document source
+- Retrieval metadata including source, chunk ID, and similarity score
+- Reranker abstraction
+- Vector-store abstraction for persistence
+
+### Changed
+
+- Retrieval now operates on chunks instead of entire documents.
+- Embedding index now stores chunk text and metadata alongside vectors.
+- Retriever now returns typed retrieval results instead of raw strings.
+- Retrieval now supports multiple relevant chunks.
+- Vector persistence has been separated from index-building logic.
+- Context construction now consumes retrieved chunk objects instead of plain document strings.
+
+### Architecture
+
+- Separated ingestion-time indexing from query-time retrieval.
+- Added a storage abstraction so retrieval is no longer coupled to JSON persistence.

@@ -36,11 +36,23 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Cosine-similarity ranking
 - [x] Semantic search
 - [x] Basic retrieval-augmented generation
-- [ ] Document chunking
-- [ ] Vector database
+
+### v0.3 — Production Retrieval
+
+- [x] Document chunking
+- [x] Chunk-level embeddings
+- [x] Typed `IndexedChunk` model
+- [x] Typed `RetrievedChunk` model
+- [x] Top-K retrieval
+- [x] Similarity threshold
+- [x] Metadata filtering
+- [x] Reranker abstraction
+- [x] Vector-store abstraction
+- [ ] Vector database integration
 - [ ] Retrieval evaluation
 
-### v0.3
+### v0.4 — Agents and Tool Orchestration
+
 - [ ] Agent workflows
 - [ ] MCP integration
 - [ ] Multi-tool orchestration
@@ -79,16 +91,21 @@ ai-infrastructure-assistant/
 ├── embeddings.json
 ├── .gitignore
 └── README.md
+├── chunker.py
+├── reranker.py
+├── vector_store.py
 ```
 
 ## Current Features
 
-- OpenAI Responses API integration
-- Environment-based API-key configuration
-- Separation of application, prompt, and provider logic
-- Typed `LLMRequest` contract
-- Infrastructure log input from a local file
-- Basic LLM-powered log analysis
+- Chunk level document indexing
+- Semantic retrieval using embeddings
+- Top-K retrieval with similarity filtering
+- Meta data aware retrieval
+- Typed retrieval results
+- Reranker abstraction
+- Vector-store abstraction
+- Incremental embedding updates
 
 ## Tech Stack
 
