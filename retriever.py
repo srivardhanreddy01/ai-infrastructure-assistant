@@ -1,98 +1,38 @@
-import math
-
 from embedding_service import generate_embedding
-from models import IndexedChunk, RetrievedChunk, RetrievalFilter
-from vector_store import load_chunks
+from models import RetrievedChunk, RetrievalFilter
+from vector_store import search
 
 TOP_K = 3
 MINIMUM_SIMILARITY = 0.45
 
 
-def retrieve(query: str, filters: RetrievalFilter | None = None) -> list[RetrievedChunk]:
+def retrieve(
+    query: str,
+    filters: RetrievalFilter | None = None,
+) -> list[RetrievedChunk]:
     """Return the top relevant knowledge chunks for the query."""
 
-    scores = calculate_similarity_scores(query=query,filters=filters,)
+    query_embedding = generate_embedding(query)
 
-    if not scores:
-        return []
-
-    sorted_scores = sorted(
-        scores.items(),
-        key=lambda item: item[1][0],
-        reverse=True,
+    search_results = search(
+        query_embedding=query_embedding,
+        top_k=TOP_K,
+        filters=filters,
     )
 
-    top_chunks: list[RetrievedChunk] = []
+    retrieved_chunks: list[RetrievedChunk] = []
 
-    for chunk_id, (similarity_score, entry) in sorted_scores:
-        if similarity_score < MINIMUM_SIMILARITY:
+    for result in search_results:
+        if result.score < MINIMUM_SIMILARITY:
             continue
 
-        top_chunks.append(
+        retrieved_chunks.append(
             RetrievedChunk(
-                source=entry.source,
-                chunk_id=chunk_id,
-                text=entry.text,
-                similarity_score=similarity_score,
+                source=result.chunk.source,
+                chunk_id=result.chunk.chunk_id,
+                text=result.chunk.text,
+                similarity_score=result.score,
             )
         )
 
-        if len(top_chunks) == TOP_K:
-            break
-
-    return top_chunks
-
-
-def calculate_similarity_scores(
-    query: str, filters: RetrievalFilter | None = None
-) -> dict[str, tuple[float, IndexedChunk]]:
-    """Calculate query similarity against indexed chunks."""
-
-    index = load_chunks()
-    query_embedding = generate_embedding(query)
-
-    scores: dict[str, tuple[float, IndexedChunk]] = {}
-
-    for chunk_id, entry in index.items():
-        if (
-        filters is not None
-        and filters.sources is not None
-        and entry.source not in filters.sources
-        ):
-            continue
-
-        score = cosine_similarity(
-            query_embedding,
-            entry.embedding,
-        )
-
-        scores[chunk_id] = (score, entry)
-
-    return scores
-
-
-def cosine_similarity(
-    vector_a: list[float],
-    vector_b: list[float],
-) -> float:
-    """Calculate cosine similarity between two vectors."""
-
-    if len(vector_a) != len(vector_b):
-        raise ValueError("Vectors must have the same dimensions.")
-
-    dot_product = sum(
-        x * y for x, y in zip(vector_a, vector_b)
-    )
-
-    magnitude_a = math.sqrt(
-        sum(x**2 for x in vector_a)
-    )
-
-    magnitude_b = math.sqrt(
-        sum(y**2 for y in vector_b)
-    )
-
-    if magnitude_a == 0 or magnitude_b == 0:
-        raise ValueError("Cannot compare zero-length vectors.")
-
-    return dot_product / (magnitude_a * magnitude_b)
+    return retrieved_chunks

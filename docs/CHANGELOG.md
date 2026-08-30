@@ -93,3 +93,10 @@
 
 - Separated ingestion-time indexing from query-time retrieval.
 - Added a storage abstraction so retrieval is no longer coupled to JSON persistence.
+
+### Changed
+- Moved vector similarity search out of the retriever into the vector-store layer.
+- Added a backend-independent `search()` interface for vector retrieval.
+- Added `VectorSearchResult` to separate storage search results from application-level retrieval results.
+- Retriever now generates query embeddings, delegates vector search, applies retrieval policy, and converts search results into `RetrievedChunk` objects.
+- JSON persistence remains the current vector-store backend.

@@ -48,7 +48,11 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Metadata filtering
 - [x] Reranker abstraction
 - [x] Vector-store abstraction
+- [x] Vector-search interface
+- [x] JSON-backed brute-force vector search
 - [ ] Vector database integration
+- [ ] ANN / HNSW search
+- [ ] Real reranking
 - [ ] Retrieval evaluation
 
 ### v0.4 — Agents and Tool Orchestration

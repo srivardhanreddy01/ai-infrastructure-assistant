@@ -102,6 +102,89 @@ Console Output
 - Keep the context builder responsible for formatting retrieved knowledge for the LLM.
 - Preserve the existing `retrieve(query)` interface while replacing keyword matching with semantic search.
 
+## Current Design Pipelines
+
+### INGESTION PIPELINE
+
+Knowledge Documents
+        ↓
+      Chunker
+        ↓
+Embedding Service
+        ↓
+   IndexedChunk
+        ↓
+Embedding Index Builder
+        ↓
+    Vector Store
+   (JSON backend)
+
+
+### QUERY PIPELINE
+
+User Query / Logs
+        ↓
+Embedding Service
+        ↓
+  Query Embedding
+        ↓
+     Retriever
+        ↓
+ Vector Store.search()
+        │
+        ├── Metadata Filtering
+        ├── Cosine Similarity
+        ├── Sorting
+        └── Candidate Top-K
+        ↓
+VectorSearchResult[]
+        ↓
+     Retriever
+        │
+        ├── Similarity Threshold
+        └── Convert to RetrievedChunk
+        ↓
+ RetrievedChunk[]
+        ↓
+     Reranker
+  (identity placeholder)
+        ↓
+  Context Builder
+        ↓
+       LLM
+
+### Retrieval Data Models
+
+**IndexedChunk**
+Represents searchable knowledge stored by the vector store. Contains the
+chunk text, source metadata, chunk identifier, and embedding.
+
+**VectorSearchResult**
+Represents the raw result returned by the vector-store search layer.
+Contains an IndexedChunk and its similarity score.
+
+**RetrievedChunk**
+Represents an application-level retrieval result. Contains only the
+information required by downstream retrieval and context-building stages.
+
+### Vector Store Abstraction
+
+The retrieval layer does not directly load or search persisted embeddings.
+
+Instead, it interacts with the vector store through a search interface:
+
+    search(query_embedding, top_k, filters)
+
+The current vector-store implementation uses JSON persistence and
+brute-force cosine similarity.
+
+This interface intentionally separates retrieval orchestration from
+vector-search implementation details. A future vector database backend
+such as Qdrant can replace the JSON implementation without requiring the
+retriever or downstream application pipeline to understand the underlying
+search mechanism.
+
+
 ---
 
 ## Current Components
