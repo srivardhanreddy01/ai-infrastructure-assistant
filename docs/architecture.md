@@ -117,8 +117,10 @@ Embedding Service
 Embedding Index Builder
         ↓
     Vector Store
-   (JSON backend)
-
+        ↓
+        Qdrant
+        ├── vectors
+        └── payload metadata
 
 ### QUERY PIPELINE
 
@@ -132,10 +134,10 @@ Embedding Service
         ↓
  Vector Store.search()
         │
-        ├── Metadata Filtering
-        ├── Cosine Similarity
-        ├── Sorting
-        └── Candidate Top-K
+      Qdrant
+        ├── metadata filtering
+        ├── vector search
+        └── Top-K
         ↓
 VectorSearchResult[]
         ↓
@@ -175,16 +177,34 @@ Instead, it interacts with the vector store through a search interface:
 
     search(query_embedding, top_k, filters)
 
-The current vector-store implementation uses JSON persistence and
-brute-force cosine similarity.
+### Vector Store
 
-This interface intentionally separates retrieval orchestration from
-vector-search implementation details. A future vector database backend
-such as Qdrant can replace the JSON implementation without requiring the
-retriever or downstream application pipeline to understand the underlying
-search mechanism.
+The vector-store layer encapsulates the underlying vector database.
 
+The current implementation uses Qdrant for vector persistence,
+similarity search, metadata filtering, and Top-K retrieval.
 
+Application layers do not depend directly on Qdrant-specific models
+or APIs. The Retriever supplies a query embedding, retrieval filters,
+and the requested candidate count through the vector-store search
+interface.
+
+The vector-store layer converts Qdrant search results into
+application-defined `VectorSearchResult` objects.
+
+IndexedChunk
+    → ingestion/storage representation
+    → contains embedding
+
+Qdrant Point
+    → database representation
+    → ID + vector + payload
+
+VectorSearchResult
+    → search boundary
+    → source + chunk_id + text + score
+    → no embedding
+    
 ---
 
 ## Current Components

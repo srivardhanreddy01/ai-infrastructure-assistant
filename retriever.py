@@ -28,9 +28,9 @@ def retrieve(
 
         retrieved_chunks.append(
             RetrievedChunk(
-                source=result.chunk.source,
-                chunk_id=result.chunk.chunk_id,
-                text=result.chunk.text,
+                source=result.source,
+                chunk_id=result.chunk_id,
+                text=result.text,
                 similarity_score=result.score,
             )
         )

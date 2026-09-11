@@ -1,11 +1,10 @@
-import json
 from pathlib import Path
 
 from chunker import chunk
 from embedding_service import generate_embedding
-from vector_store import load_chunks, save_chunks
+from vector_store import delete_source, save_chunks, close_vector_store
+from models import IndexedChunk
 
-EMBEDDINGS_FILE = Path("embeddings.json")
 KNOWLEDGE_DIRECTORY = Path("knowledge")
 
 DOCUMENTS = [
@@ -17,10 +16,7 @@ DOCUMENTS = [
 
 def build_embedding_index() -> None:
     """Generate embeddings for new or modified document chunks."""
-
-    existing_index = load_chunks()
-    updated_index: dict[str, IndexedChunk] = {}
-
+    
     for document_name in DOCUMENTS:
         file_path = KNOWLEDGE_DIRECTORY / document_name
         modified_at = file_path.stat().st_mtime
@@ -28,20 +24,13 @@ def build_embedding_index() -> None:
         content = extract_file(file_path)
         chunks = chunk(content)
 
+        delete_source(document_name)
+        indexed_chunks: dict[str, IndexedChunk] = {}
+
         for chunk_index, chunk_text in enumerate(chunks):
             chunk_id = f"{document_name}#chunk_{chunk_index}"
 
-            existing_entry = existing_index.get(chunk_id)
-
-            if (
-                existing_entry is not None
-                and existing_entry.modified_at == modified_at
-                and existing_entry.text == chunk_text
-            ):
-                updated_index[chunk_id] = existing_entry
-                continue
-
-            updated_index[chunk_id] = IndexedChunk(
+            indexed_chunks[chunk_id] = IndexedChunk(
                 source=document_name,
                 chunk_id=chunk_id,
                 modified_at=modified_at,
@@ -49,7 +38,7 @@ def build_embedding_index() -> None:
                 embedding=generate_embedding(chunk_text),
             )
 
-    save_chunks(updated_index)
+        save_chunks(indexed_chunks)
 
 def extract_file(path: Path) -> str:
     with path.open("r", encoding="utf-8") as file:

@@ -39,5 +39,7 @@ class RetrievalFilter(BaseModel):
     sources: list[str] | None = None
 
 class VectorSearchResult(BaseModel):
-    chunk: IndexedChunk
+    source: str
+    chunk_id: str
+    text: str
     score: float

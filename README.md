@@ -41,19 +41,16 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 
 - [x] Document chunking
 - [x] Chunk-level embeddings
-- [x] Typed `IndexedChunk` model
-- [x] Typed `RetrievedChunk` model
+- [x] Typed indexed and retrieved chunks
 - [x] Top-K retrieval
 - [x] Similarity threshold
 - [x] Metadata filtering
 - [x] Reranker abstraction
 - [x] Vector-store abstraction
-- [x] Vector-search interface
-- [x] JSON-backed brute-force vector search
-- [ ] Vector database integration
-- [ ] ANN / HNSW search
-- [ ] Real reranking
+- [x] Qdrant vector database integration
+- [x] Vector-based nearest-neighbor search
 - [ ] Retrieval evaluation
+- [ ] Real reranking
 
 ### v0.4 — Agents and Tool Orchestration
 

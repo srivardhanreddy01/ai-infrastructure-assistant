@@ -100,3 +100,20 @@
 - Added `VectorSearchResult` to separate storage search results from application-level retrieval results.
 - Retriever now generates query embeddings, delegates vector search, applies retrieval policy, and converts search results into `RetrievedChunk` objects.
 - JSON persistence remains the current vector-store backend.
+
+### Added
+- Qdrant-backed vector storage and retrieval.
+- Persistent local vector database for infrastructure knowledge.
+- Metadata-based source filtering.
+- Deterministic Qdrant point IDs for indexed chunks.
+- Source-level deletion and reindexing.
+
+### Changed
+- Replaced JSON-backed vector persistence with Qdrant.
+- Replaced brute-force Python cosine similarity with vector-database search.
+- Vector search results no longer expose stored embedding vectors.
+- Vector-store layer now translates Qdrant results into application-level `VectorSearchResult` objects.
+
+### Removed
+- JSON embedding persistence.
+- Manual cosine similarity search.
