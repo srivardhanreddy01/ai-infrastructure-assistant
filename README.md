@@ -49,7 +49,7 @@ The project focuses on AI Engineering concepts including prompt architecture, st
 - [x] Vector-store abstraction
 - [x] Qdrant vector database integration
 - [x] Vector-based nearest-neighbor search
-- [ ] Retrieval evaluation
+- [x] Retrieval evaluation
 - [ ] Real reranking
 
 ### v0.4 — Agents and Tool Orchestration
@@ -76,6 +76,9 @@ ai-infrastructure-assistant/
 │   └── mongodb.md
 ├── logs/
 │   └── mongodb_connection.log
+├── evaluation/
+│   └── evaluate_retrieval.py
+|   └── retrieval_cases.json
 ├── app.py
 ├── config.py
 ├── context_builder.py
