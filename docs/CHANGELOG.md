@@ -117,3 +117,8 @@
 ### Removed
 - JSON embedding persistence.
 - Manual cosine similarity search.
+
+### Added
+- New new evalution of few retrieval cases
+- Verified the results by running aganist the input cases 
+- Measured evaluation using Precision and Recall

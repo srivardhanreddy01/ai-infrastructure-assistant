@@ -1,0 +1,32 @@
+[
+    {
+      "query": "MongoDB connection refused on port 27017",
+      "relevant_chunk_ids": [
+        "mongodb.md#chunk_1"
+      ]
+    },
+    {
+      "query": "MongoDB authentication failed due to invalid credentials",
+      "relevant_chunk_ids": [
+        "mongodb.md#chunk_3"
+      ]
+    },
+    {
+      "query": "Service 'docker' exited with exit code: 1",
+      "relevant_chunk_ids": [
+        "docker.md#chunk_1"
+      ]
+    },
+    {
+      "query": "Out of memory: Kill process",
+      "relevant_chunk_ids": [
+        "docker.md#chunk_2"
+      ]
+    },
+    {
+      "query": "CrashLoopBackOff",
+      "relevant_chunk_ids": [
+        "kubernetes.md#chunk_1"
+      ]
+    }
+]

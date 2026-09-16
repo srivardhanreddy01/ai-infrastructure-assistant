@@ -136,3 +136,19 @@ def search(
 
 def close_vector_store() -> None:
     client.close()
+
+def load_qdrant():
+    points, _ = client.scroll(
+    collection_name=COLLECTION_NAME,
+    limit=100,
+    with_payload=True,
+    with_vectors=False,)
+
+    for point in points:
+        print(
+            point.payload["source"],
+            point.payload["chunk_id"],
+        )
+
+if __name__ == "__main__":
+    load_qdrant()

@@ -43,3 +43,7 @@ class VectorSearchResult(BaseModel):
     chunk_id: str
     text: str
     score: float
+
+class RetrievalEvaluationCase(BaseModel):
+    query: str
+    relevant_chunk_ids: list[str]
